@@ -1,0 +1,39 @@
+---
+openstack_package_prerequisites:
+  - python-pip
+  - libssl-dev
+  - python-pymysql
+  - apache2
+  - libapache2-mod-wsgi
+  - python-pil
+  - python-gobject
+  - python-scgi
+  - python-memcache
+
+openstack_service_daemons:
+  - apache2
+
+openstack_services:
+  - keystone
+
+openstack_sudoers: []
+
+service_files:
+  etc:
+    src: etc
+    dest: /etc/keystone
+
+config_files:
+  keystone.conf:
+    src: keystone.conf.j2
+    dest: /etc/keystone/keystone.conf
+    owner: keystone
+    group: keystone
+    notify: restart-apache2
+
+contrib_files: []
+
+openstack_source_projects:
+  - keystone
+  - python-keystoneclient
+  - keystonemiddleware

@@ -1,0 +1,21 @@
+---
+
+- name: Set up users and service directories
+  import_role:
+    name: openstack-common
+    tasks_from: service-setup-docker.yml
+
+- name: Install service config files
+  import_role:
+    name: openstack-common
+    tasks_from: service-configs.yml
+
+- name: Deploy Containers
+  import_role:
+    name: openstack-common
+    tasks_from: service-containers.yml
+
+- name: create keystone container
+  shell: docker run -v /etc/keystone:/etc/keystone:ro -p 9292:9292 -v /var/lib/keystone:/var/lib/keystone -v /var/log/keystone:/var/log/keystone --name keystone --workdir /var/lib/keystone -d -t dockerhub.paypalcorp.com/ajanis/keystone:latest
+  args:
+    executable: /bin/bash
